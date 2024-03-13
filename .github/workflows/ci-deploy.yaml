@@ -94,16 +94,19 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
-          echo GITHUB_SHA
-          echo github.sha
+          echo $GITHUB_SHA
+          echo ${{ GITHUB_SHA }}
+          echo ${{ github.sha }}
 
           export GITUSER=$(echo ${{ github.actor }})
           export IMAGE_TAG=$(echo ${{ github.sha }})
           export DATE=$(echo date)
           envsubst < deployment.template > deployment.yaml
 
+          echo ---
           cat deployment.yaml
-          env
+          echo ---
+
           git add -A
           git status  # Add this line to print the git status
           git diff    # Add this line to print the changes
