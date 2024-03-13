@@ -96,7 +96,7 @@ jobs:
 
           GITUSER=$(echo ${{ github.actor }})
           IMAGE_TAG=$(echo ${{ github.sha }})
-          DATE=$(echo ${{ date }})
+          DATE=$(echo date)
           envsubst < deployment.template > deployment.yaml
 
           cat deployment.yaml
