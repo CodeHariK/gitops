@@ -97,7 +97,7 @@ jobs:
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(date)
-          envsubst < deployment.template > deployment.yaml
+          envsubst < deployment.t.yaml > deployment.yaml
 
           echo ---
           cat deployment.yaml
