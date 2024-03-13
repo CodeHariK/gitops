@@ -18,9 +18,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -32,7 +32,7 @@ jobs:
     needs: build
     steps:
       - name: Running Tests
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - run: echo "running Tests"
 
   build-and-push-docker-image:
@@ -44,7 +44,7 @@ jobs:
     # steps to perform in job
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # setup Docker buld action
       - name: Set up Docker Buildx
@@ -82,15 +82,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: ["build-and-push-docker-image"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          repository: codeharik/gitaction
+          repository: CodeHariK/gitaction
           ref: "main"
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          git config --global user.email "codeharik@gmail.com"
-          git config --global user.name "codeharik"
+          git config --global user.email "CodeHariK@gmail.com"
+          git config --global user.name "CodeHariK"
           echo ${{ github.sha }}
           sed -i "s#${{ github.actor }}.*#${{ github.actor }}/gitops01:${{ github.sha }}#g" deployment.yaml
           git add -A
