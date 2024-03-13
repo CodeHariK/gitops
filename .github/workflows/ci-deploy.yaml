@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.11.1]
+        node-version: [20]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -72,7 +72,9 @@ jobs:
           # Note: tags has to be all lower-case
           tags: |
             ginedecoen/gitops:${{ github.sha }}
-            ghcr.io/ginedecoen/gitops:${{ github.sha }}
+          # tags: |
+          #   ginedecoen/gitops:${{ github.sha }}
+          #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
