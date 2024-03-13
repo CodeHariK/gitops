@@ -94,7 +94,7 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
-          echo ${{ GITHUB_SHA }}
+          echo $GITHUB_SHA
           echo ${{ github.sha }}
 
           export GITUSER=$(echo ${{ github.actor }})
