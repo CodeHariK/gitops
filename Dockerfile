@@ -1,24 +1,29 @@
-# BUILD STAGE
-FROM node:21-alpine as build-step
+# Stage 1: Build the Node.js application
+FROM node:21-alpine as builder
 
+# Set the working directory
 WORKDIR /app
 
-COPY package.json /app/
+# Copy package.json and package-lock.json to install dependencies
+COPY package.json ./
 
-RUN npm i
+# Install npm dependencies
+RUN npm install
 
-COPY . /app
+# Copy the rest of the application code
+COPY . .
 
+# Build the Node.js application
 RUN npm run build
 
-# ========================================
-# NGINX STAGE
-# ========================================
-
+# Stage 2: Serve the application using Nginx
 FROM nginx:1.25.4-alpine
 
-WORKDIR /usr/share/nginx/html/
+# Copy the built application from the previous stage
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=build-step /app/build ./
+# Expose port 80 for Nginx
+EXPOSE 80
 
-CMD [ "nginx", "-g", "daemon off;" ]
+# Command to run Nginx
+CMD ["nginx", "-g", "daemon off;"]
