@@ -71,7 +71,7 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ginedecoen/gitops:$GITHUB_SHA
+            ginedecoen/gitops:${{ github.sha }}
           # tags: |
           #   ginedecoen/gitops:${{ github.sha }}
           #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
@@ -96,7 +96,7 @@ jobs:
 
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
-          export DATE=$(echo date)
+          export DATE=$(date)
           envsubst < deployment.template > deployment.yaml
 
           echo ---
