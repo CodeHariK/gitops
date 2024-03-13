@@ -7,7 +7,7 @@ on:
   push:
     branches: ["main"]
 #   pull_request:
-#     branches: [ "master" ]
+#     branches: [ "main" ]
 
 jobs:
   build:
@@ -74,7 +74,7 @@ jobs:
             codeharik/gitops:${{ github.sha }}
             ghcr.io/codeharik/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.ref == 'refs/heads/main' }}
 
   update-manifest-stage:
     runs-on: ubuntu-latest
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: codeharik/gitaction
-          ref: "master"
+          ref: "main"
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
@@ -94,4 +94,4 @@ jobs:
           git add -A
           git commit -am "Update image for - ${{ github.sha }}"
       - run: echo ${{ github }}
-      - run: git push origin master
+      - run: git push origin main
