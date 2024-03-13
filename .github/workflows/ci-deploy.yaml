@@ -71,7 +71,7 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ginedecoen/gitops:${{ github.sha }}
+            ginedecoen/gitops:$GITHUB_SHA
           # tags: |
           #   ginedecoen/gitops:${{ github.sha }}
           #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
@@ -94,11 +94,8 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
-          echo $GITHUB_SHA
-          echo ${{ github.sha }}
-
-          export GITUSER=$(echo ${{ github.actor }})
-          export IMAGE_TAG=$(echo ${{ github.sha }})
+          export GITUSER=$(echo $GITHUB_ACTOR)
+          export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(echo date)
           envsubst < deployment.template > deployment.yaml
 
