@@ -91,11 +91,16 @@ jobs:
         run: |
           echo
           cat deployment.yaml
+
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
-          SHA=$(echo ${{ github.sha }})
-          sed -i "s#${{ github.actor }}.*#${{ github.actor }}/gitops:${{ github.sha }}#g" deployment.yaml
+
+          GITUSER=$(echo ${{ github.actor }})
+          IMAGE_TAG=$(echo ${{ github.sha }})
+          envsubst < deployment.template > deployment.yaml
+
           cat deployment.yaml
+          env
           git add -A
           git status  # Add this line to print the git status
           git diff    # Add this line to print the changes
