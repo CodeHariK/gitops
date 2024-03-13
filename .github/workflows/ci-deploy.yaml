@@ -89,11 +89,15 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
+          echo
+          cat deployment.yaml
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
-          echo ${{ github.sha }}
+          SHA=$(echo ${{ github.sha }})
           sed -i "s#${{ github.actor }}.*#${{ github.actor }}/gitops:${{ github.sha }}#g" deployment.yaml
+          cat deployment.yaml
           git add -A
-          git commit -am "Update image for - ${{ github.sha }}"
-      - run: echo ${{ github }}
-      - run: git push origin main
+          git status  # Add this line to print the git status
+          git diff    # Add this line to print the changes
+          git commit -m "Update image for - ${SHA}"
+          git push origin main
