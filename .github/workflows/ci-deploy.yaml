@@ -66,10 +66,20 @@ jobs:
 
       - name: Read Environment Variables
         run: |
+          ls
+          pwd
+
           while IFS='=' read -r key value; do
             value="${value//\"}"
             echo "$key=$value" >> $GITHUB_ENV
           done < build.config
+
+      - name: Print Environment Variables
+        run: |
+          env | grep -i build
+          echo $BUILD
+          echo ${BUILD}
+          echo ${{env.BUILD}}
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
@@ -94,10 +104,10 @@ jobs:
           ls
           pwd
 
-          # while IFS='=' read -r key value; do
-          #   value="${value//\"}"
-          #   echo "$key=$value" >> $GITHUB_ENV
-          # done < build.config
+          while IFS='=' read -r key value; do
+            value="${value//\"}"
+            echo "$key=$value" >> $GITHUB_ENV
+          done < build.config
 
       - name: Print Environment Variables
         run: |
