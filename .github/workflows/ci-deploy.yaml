@@ -93,6 +93,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Read Environment Variables
         run: |
+          env
           while IFS='=' read -r key value; do
             value="${value//\"}"
             echo "$key=$value" >> $GITHUB_ENV
@@ -115,7 +116,7 @@ jobs:
           for file in *.tmpl; do
               printf "\n~> ${file%.tmpl}\n"
               envsubst < "$file" > "${file%.tmpl}.yaml.tmp"
-              printf "# Auto-Generated : $DATE @ Build:${{ env.BUILD }}\n" > "${file%.tmpl}.yaml"
+              printf "# Auto-Generated Build:${{ env.BUILD }} @ $DATE\n\n" > "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
               diff -yt "${file%.tmpl}.yaml" "$file" || true
