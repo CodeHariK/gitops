@@ -73,6 +73,7 @@ jobs:
 
       - run: |
           echo ${{ env.CONTAINER_REPO }}
+          echo ${ env.CONTAINER_REPO }
           echo ${{ env.IMAGE_NAME }}
           echo ${{ env.BUILD }}
           echo ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:latest
