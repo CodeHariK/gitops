@@ -108,10 +108,6 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
-          echo $BUILD
-          echo ${BUILD}
-          echo ${{env.BUILD}}
-
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(date)
@@ -125,7 +121,7 @@ jobs:
               echo "" >> "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
-              diff -yt "${file%.tmpl}.yaml" $file
+              # diff -yt "${file%.tmpl}.yaml" $file
           done
 
           git add -A
