@@ -68,6 +68,8 @@ jobs:
         run: |
           while IFS='=' read -r key value; do
             value="${value//\"}"
+            echo "$key=$value"
+            env | grep -i key
             echo "$key=$value" >> $GITHUB_ENV
           done < build.config
 
