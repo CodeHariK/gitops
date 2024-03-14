@@ -70,6 +70,7 @@ jobs:
           ls .
           echo "---"
           while IFS='=' read -r key value; do
+            value="${value//\"}"
             echo "$key=$value" >> $GITHUB_ENV
           done < build.config
           echo $BUILD
@@ -111,6 +112,7 @@ jobs:
       - name: setup git config
         run: |
           source ./build.config
+          echo $BUILD
 
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
