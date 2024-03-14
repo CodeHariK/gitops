@@ -78,10 +78,10 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ginedecoen/gitops:${{env.BUILD}}-${{ github.sha }}
+            ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:latest
           # tags: |
-          #   ginedecoen/gitops:${{ github.sha }}
-          #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
+          #   ${{env.CONTAINER_REPO}}/gitops:${{ github.sha }}
+          #   ghcr.io/${{env.CONTAINER_REPO}}/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
