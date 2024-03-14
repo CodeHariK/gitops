@@ -47,7 +47,7 @@ jobs:
       - run: echo "running Tests"
       - run: env | grep -i build
       - run: echo ${{env.BUILD}}
-      - run: /
+      - run: |
           export $(cat build.config | xargs)
           echo $BUILD
 
@@ -83,8 +83,8 @@ jobs:
       - name: Read Environment Variables
         run: |
           while IFS='=' read -r key value; do
-          value="${value//\"}"
-          echo "$key=$value" >> $GITHUB_ENV
+            value="${value//\"}"
+            echo "$key=$value" >> $GITHUB_ENV
           done < build.config
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
