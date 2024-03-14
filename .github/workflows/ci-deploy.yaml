@@ -89,7 +89,7 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          echo
+          source build.config 
 
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
@@ -97,11 +97,18 @@ jobs:
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(date)
-          envsubst < deployment.t.yaml > deployment.yaml
 
-          echo ---
-          cat deployment.yaml
-          echo ---
+          for file in *.tmpl; do
+              printf "\n~> ${file%.tmpl}\n"
+              timestamp=$(date +"# Auto-Generated : %Y-%m-%d %H:%M:%S")
+              envsubst < "$file" > "${file%.tmpl}.yaml.tmp"
+              echo "$timestamp" > "${file%.tmpl}.yaml"
+              echo "# Build: $BUILD" >> "${file%.tmpl}.yaml"
+              echo "" >> "${file%.tmpl}.yaml"
+              cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
+              rm "${file%.tmpl}.yaml.tmp"
+              diff -yt "${file%.tmpl}.yaml" $file
+          done
 
           git add -A
           git status  # Add this line to print the git status
