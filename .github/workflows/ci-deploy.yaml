@@ -71,6 +71,12 @@ jobs:
             echo "$key=$value" >> $GITHUB_ENV
           done < build.config
 
+      - run: |
+          echo ${{ env.CONTAINER_REPO }}
+          echo ${{ env.IMAGE_NAME }}
+          echo ${{ env.BUILD }}
+          echo ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:latest
+
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
         with:
