@@ -110,7 +110,7 @@ jobs:
 
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
-          export DATE=$(date)
+          export DATE=$(TZ="Asia/Kolkata" date)
 
           for file in *.tmpl; do
               printf "\n~> ${file%.tmpl}\n"
