@@ -74,10 +74,10 @@ jobs:
           done < build.config
 
       - run: |
-          echo ${{ env.IMAGE_HOST }}
+          echo ${{ env.CONTAINER_REPO }}
           echo ${{ env.IMAGE_NAME }}
           echo ${{ env.BUILD }}
-          echo ${{ env.IMAGE_HOST }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.IMAGE_HOST }}/${{ env.IMAGE_NAME }}:latest
+          echo ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:latest
 
   #     - name: Build image and push to Docker Hub and GitHub Container Registry
   #       uses: docker/build-push-action@v5
@@ -86,10 +86,10 @@ jobs:
   #         context: ./
   #         # Note: tags has to be all lower-case
   #         tags: |
-  #           ${{ env.IMAGE_HOST }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.IMAGE_HOST }}/${{ env.IMAGE_NAME }}:latest
+  #           ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }},${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:latest
   #         # tags: |
-  #         #   ${{env.IMAGE_HOST}}/gitops:${{ github.sha }}
-  #         #   ghcr.io/${{env.IMAGE_HOST}}/gitops:${{ github.sha }}
+  #         #   ${{env.CONTAINER_REPO}}/gitops:${{ github.sha }}
+  #         #   ghcr.io/${{env.CONTAINER_REPO}}/gitops:${{ github.sha }}
   #         # build on feature branches, push only on main branch
   #         push: ${{ github.ref == 'refs/heads/main' }}
 
