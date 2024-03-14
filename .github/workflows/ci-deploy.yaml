@@ -121,7 +121,7 @@ jobs:
               echo "" >> "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
-              # diff -yt "${file%.tmpl}.yaml" $file
+              diff -yt "${file%.tmpl}.yaml" "$file" || true
           done
 
           git add -A
