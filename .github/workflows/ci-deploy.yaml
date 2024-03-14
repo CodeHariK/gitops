@@ -42,6 +42,8 @@ jobs:
       - name: Running Tests
         uses: actions/checkout@v4
       - run: echo "running Tests"
+      - run: env
+      - run: echo ${{env.BUILD}}
 
   build-and-push-docker-image:
     name: Build Docker image and push to repositories
