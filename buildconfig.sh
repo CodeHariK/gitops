@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export BUILD=1.0
-export CONTAINER_REPO="ginedecoen"
-export IMAGE_NAME="gitops"
-export BUILD_PLATFORMS="linux/arm64"
+echo "BUILD=1.0" >> $GITHUB_ENV
+echo "CONTAINER_REPO=ginedecoen" >> $GITHUB_ENV
+echo "IMAGE_NAME=gitops" >> $GITHUB_ENV
+echo "BUILD_PLATFORMS=linux/arm64" >> $GITHUB_ENV
