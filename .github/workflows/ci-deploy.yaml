@@ -64,19 +64,11 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.G_TOKEN }}
 
-      - name: Read Environment Variables
-        run: |
-          while IFS='=' read -r key value; do
-            # Trim leading and trailing whitespace
-            value="${value#"${value%%[![:space:]]*}"}"
-            value="${value%"${value##*[![:space:]]}"}"
+      - name: Set Environment Variables
+        run: bash buildconfig.sh
 
-            # Skip empty lines
-            if [[ -n "$key" && -n "$value" ]]; then
-              echo "$key=$value"
-              echo "$key=$value" >> $GITHUB_ENV
-            fi
-          done < build.config
+      - name: Print
+        run: echo ${{ env.CONTAINER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.BUILD }}-${{ github.sha }}
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
@@ -100,13 +92,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Read Environment Variables
-        run: |
-          env
-          while IFS='=' read -r key value; do
-            value="${value//\"}"
-            echo "$key=$value" >> $GITHUB_ENV
-          done < build.config
+
+      - name: Set Environment Variables
+        run: bash buildconfig.sh
 
       - uses: actions/checkout@v4
         with:
