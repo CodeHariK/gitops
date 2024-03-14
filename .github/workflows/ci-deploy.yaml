@@ -79,7 +79,6 @@ jobs:
       - name: Read build.config
         run: |
           echo "---"
-          export $(cat build.config | xargs)
           echo $BUILD
           echo ${BUILD}
           echo ${{env.BUILD}}
@@ -93,7 +92,7 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ginedecoen/gitops:${BUILD}-${{ github.sha }}
+            ginedecoen/gitops:${{env.BUILD}}-${{ github.sha }}
           # tags: |
           #   ginedecoen/gitops:${{ github.sha }}
           #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
