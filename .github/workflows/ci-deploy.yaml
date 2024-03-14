@@ -28,13 +28,15 @@ jobs:
         run: |
           pwd
           ls
+          echo "-"
           cat build.config
+          echo "--"
           while IFS='=' read -r key value; do
             value="${value//\"}"
-            echo "$key=$value"
+            echo "--> $key=$value"
             echo "$key=$value" >> $GITHUB_ENV
           done < build.config
-          env
+          env | grep -i build
           echo ${{env.BUILD}}
           echo $GIT_BUILD
       - run: echo ${{env.BUILD}}
@@ -49,7 +51,7 @@ jobs:
         uses: actions/checkout@v4
       - run: echo "running Tests"
       - run: echo ${{env.BUILD}}
-      - run: env
+      - run: env | grep -i build
 
   build-and-push-docker-image:
     name: Build Docker image and push to repositories
