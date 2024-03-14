@@ -70,7 +70,7 @@ jobs:
           ls .
           echo "---"
           while IFS='=' read -r key value; do
-            export "$key"="$value"
+            echo "$key=$value" >> $GITHUB_ENV
           done < build.config
           echo $BUILD
           echo ${BUILD}
@@ -78,8 +78,11 @@ jobs:
       - name: Read build.config
         run: |
           echo "---"
+          export $(cat build.config | xargs)
           echo $BUILD
           echo ${BUILD}
+          echo ${git.BUILD}
+          echo ${env.BUILD}
           echo "---"
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
