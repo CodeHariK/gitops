@@ -26,11 +26,13 @@ jobs:
           cache: "npm"
 
       - name: Read Environment Variables
-        run: /
+        run: |
+          echo "hello"
           while IFS='=' read -r key value; do
-          value="${value//\"}"
-          echo "$key=$value" >> $GITHUB_ENV
+            value="${value//\"}"
+            echo "$key=$value" >> $GITHUB_ENV
           done < build.config
+
       - run: env | grep -i build
       - run: echo ${{env.BUILD}}
       - run: npm ci
@@ -79,7 +81,7 @@ jobs:
       #     password: ${{ secrets.G_TOKEN }}
 
       - name: Read Environment Variables
-        run: /
+        run: |
           while IFS='=' read -r key value; do
           value="${value//\"}"
           echo "$key=$value" >> $GITHUB_ENV
