@@ -70,6 +70,15 @@ jobs:
           ls .
           echo "---"
           source ./build.config
+          echo $BUILD
+          echo ${BUILD}
+
+      - name: Read build.config
+        run: |
+          echo "---"
+          echo $BUILD
+          echo ${BUILD}
+          echo "---"
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
