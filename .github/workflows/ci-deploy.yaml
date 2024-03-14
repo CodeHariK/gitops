@@ -74,6 +74,7 @@ jobs:
           done < build.config
           echo $BUILD
           echo ${BUILD}
+          echo ${env.BUILD}
 
       - name: Read build.config
         run: |
@@ -81,9 +82,9 @@ jobs:
           export $(cat build.config | xargs)
           echo $BUILD
           echo ${BUILD}
-          echo ${git.BUILD}
           echo ${env.BUILD}
           echo "---"
+          env
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
