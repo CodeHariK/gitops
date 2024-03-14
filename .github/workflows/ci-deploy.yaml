@@ -69,7 +69,9 @@ jobs:
           echo "---"
           ls .
           echo "---"
-          source ./build.config
+          while IFS='=' read -r key value; do
+            export "$key"="$value"
+          done < build.config
           echo $BUILD
           echo ${BUILD}
 
