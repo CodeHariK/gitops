@@ -89,7 +89,7 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          source build.config 
+          source ../../build.config 
 
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
