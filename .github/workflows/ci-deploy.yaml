@@ -64,6 +64,16 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.G_TOKEN }}
 
+      - name: Read Local Environment Variables
+        run: |
+          export $(cat build.config | xargs)
+          echo $BUILD
+
+      - name: Print Local Environment Variables
+        run: |
+          echo $BUILD
+          env | grep -i build
+
       - name: Read Environment Variables
         run: |
           while IFS='=' read -r key value; do
@@ -90,19 +100,30 @@ jobs:
     needs: ["build-and-push-docker-image"]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Read Environment Variables
+        run: |
+          while IFS='=' read -r key value; do
+            value="${value//\"}"
+            echo "$key=$value" >> $GITHUB_ENV
+          done < build.config
+
+      - name: Print Environment Variables
+        run: |
+          env | grep -i build
+          echo $BUILD
+          echo ${BUILD}
+          echo ${{env.BUILD}}
+
         with:
           repository: CodeHariK/gitaction
           ref: "main"
           token: ${{ secrets.G_TOKEN }}
+
       - name: setup git config
         run: |
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
-
-          ls
-
-          export $(cat build.config | xargs)
-          echo $BUILD 
 
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
@@ -113,7 +134,7 @@ jobs:
               timestamp=$(date +"# Auto-Generated : %Y-%m-%d %H:%M:%S")
               envsubst < "$file" > "${file%.tmpl}.yaml.tmp"
               echo "$timestamp" > "${file%.tmpl}.yaml"
-              echo "# Build: $BUILD" >> "${file%.tmpl}.yaml"
+              echo "# Build: ${{env.BUILD}}" >> "${file%.tmpl}.yaml"
               echo "" >> "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
@@ -125,7 +146,3 @@ jobs:
           git diff    # Add this line to print the changes
           git commit -m "Update image for - ${SHA}"
           git push origin main
-
-      - name: Read Environment Variables
-        run: |
-          echo $BUILD
