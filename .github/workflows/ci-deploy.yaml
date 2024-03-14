@@ -64,16 +64,6 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.G_TOKEN }}
 
-      - name: Read Local Environment Variables
-        run: |
-          export $(cat build.config | xargs)
-          echo $BUILD
-
-      - name: Print Local Environment Variables
-        run: |
-          echo $BUILD
-          env | grep -i build
-
       - name: Read Environment Variables
         run: |
           while IFS='=' read -r key value; do
@@ -101,6 +91,8 @@ jobs:
     steps:
       - name: Read Environment Variables
         run: |
+          ls
+          pwd
           while IFS='=' read -r key value; do
             value="${value//\"}"
             echo "$key=$value" >> $GITHUB_ENV
