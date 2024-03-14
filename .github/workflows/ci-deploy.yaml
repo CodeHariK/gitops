@@ -66,13 +66,10 @@ jobs:
 
       - name: source build.config
         run: |
-          echo ".."
-          ls ..
-          echo "../.."
-          ls ../..
-          echo "."
+          echo "---"
           ls .
-          source ../../build.config
+          echo "---"
+          source ./build.config
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
@@ -99,7 +96,7 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          source ../../build.config 
+          source ./build.config
 
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
