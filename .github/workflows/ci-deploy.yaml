@@ -24,17 +24,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-
-      - name: Read Environment Variables
-        run: |
-          echo "hello"
-          while IFS='=' read -r key value; do
-            value="${value//\"}"
-            echo "$key=$value" >> $GITHUB_ENV
-          done < build.config
-
-      - run: env | grep -i build
-      - run: echo ${{env.BUILD}}
       - run: npm ci
       - run: npm run build --if-present
 
@@ -45,11 +34,6 @@ jobs:
       - name: Running Tests
         uses: actions/checkout@v4
       - run: echo "running Tests"
-      - run: env | grep -i build
-      - run: echo ${{env.BUILD}}
-      - run: |
-          export $(cat build.config | xargs)
-          echo $BUILD
 
   build-and-push-docker-image:
     name: Build Docker image and push to repositories
@@ -115,6 +99,8 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
+          export $(cat build.config | xargs)
+
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(date)
@@ -124,7 +110,7 @@ jobs:
               timestamp=$(date +"# Auto-Generated : %Y-%m-%d %H:%M:%S")
               envsubst < "$file" > "${file%.tmpl}.yaml.tmp"
               echo "$timestamp" > "${file%.tmpl}.yaml"
-              echo "# Build: ${{env.BUILD}}" >> "${file%.tmpl}.yaml"
+              echo "# Build: $BUILD" >> "${file%.tmpl}.yaml"
               echo "" >> "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
