@@ -10,30 +10,30 @@ on:
 #     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  # build:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [20]
+  #       # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
-      - run: npm run build --if-present
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache: "npm"
+  #     - run: npm ci
+  #     - run: npm run build --if-present
 
-  test-stage:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Running Tests
-        uses: actions/checkout@v4
-      - run: echo "running Tests"
+  # test-stage:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Running Tests
+  #       uses: actions/checkout@v4
+  #     - run: echo "running Tests"
 
   build-and-push-docker-image:
     name: Build Docker image and push to repositories
@@ -99,7 +99,10 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
+          ls
+
           export $(cat build.config | xargs)
+          echo $BUILD 
 
           export GITUSER=$(echo $GITHUB_ACTOR)
           export IMAGE_TAG=$(echo $GITHUB_SHA)
@@ -122,3 +125,7 @@ jobs:
           git diff    # Add this line to print the changes
           git commit -m "Update image for - ${SHA}"
           git push origin main
+
+      - name: Read Environment Variables
+        run: |
+          echo $BUILD
