@@ -64,6 +64,16 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.G_TOKEN }}
 
+      - name: source build.config
+        run: |
+          echo ".."
+          ls ..
+          echo "../.."
+          ls ../..
+          echo "."
+          ls .
+          source ../../build.config
+
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
         with:
@@ -71,7 +81,7 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ginedecoen/gitops:${{ github.sha }}
+            ginedecoen/gitops:${BUILD}-${{ github.sha }}
           # tags: |
           #   ginedecoen/gitops:${{ github.sha }}
           #   ghcr.io/ginedecoen/gitops:${{ github.sha }}
