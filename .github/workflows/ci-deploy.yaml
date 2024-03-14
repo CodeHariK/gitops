@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Read build.config and set environment variables
         run: |
+          pwd
+          ls
           while IFS='=' read -r key value; do
             value="${value//\"}"
             echo "$key=$value" >> $GITHUB_ENV
@@ -22,6 +24,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: read-and-set-vars
     strategy:
       matrix:
         node-version: [20]
