@@ -10,6 +10,16 @@ on:
 #     branches: [ "main" ]
 
 jobs:
+  read-and-set-vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read build.config and set environment variables
+        run: |
+          while IFS='=' read -r key value; do
+            value="${value//\"}"
+            echo "$key=$value" >> $GITHUB_ENV
+          done < build.config
+
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -64,28 +74,6 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.G_TOKEN }}
 
-      - name: source build.config
-        run: |
-          echo "---"
-          ls .
-          echo "---"
-          while IFS='=' read -r key value; do
-            value="${value//\"}"
-            echo "$key=$value" >> $GITHUB_ENV
-          done < build.config
-          echo $BUILD
-          echo ${BUILD}
-          echo ${{env.BUILD}}
-
-      - name: Read build.config
-        run: |
-          echo "---"
-          echo $BUILD
-          echo ${BUILD}
-          echo ${{env.BUILD}}
-          echo "---"
-          env
-
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v5
         with:
@@ -111,9 +99,6 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          source ./build.config
-          echo $BUILD
-
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
@@ -126,7 +111,7 @@ jobs:
               timestamp=$(date +"# Auto-Generated : %Y-%m-%d %H:%M:%S")
               envsubst < "$file" > "${file%.tmpl}.yaml.tmp"
               echo "$timestamp" > "${file%.tmpl}.yaml"
-              echo "# Build: $BUILD" >> "${file%.tmpl}.yaml"
+              echo "# Build: ${{env.BUILD}}" >> "${file%.tmpl}.yaml"
               echo "" >> "${file%.tmpl}.yaml"
               cat "${file%.tmpl}.yaml.tmp" >> "${file%.tmpl}.yaml"
               rm "${file%.tmpl}.yaml.tmp"
