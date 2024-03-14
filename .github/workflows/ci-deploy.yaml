@@ -106,6 +106,7 @@ jobs:
           git config --global user.email "CodeHariK@gmail.com"
           git config --global user.name "CodeHariK"
 
+          export IMAGE_TAG=$(echo $GITHUB_SHA)
           export DATE=$(TZ="Asia/Kolkata" date)
 
           for file in *.tmpl; do
