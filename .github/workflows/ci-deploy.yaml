@@ -67,10 +67,15 @@ jobs:
       - name: Read Environment Variables
         run: |
           while IFS='=' read -r key value; do
-            value="${value//\"}"
-            echo "$key=$value"
-            # env | grep -i key
-            echo "$key=$value" >> $GITHUB_ENV
+            # Trim leading and trailing whitespace
+            value="${value#"${value%%[![:space:]]*}"}"
+            value="${value%"${value##*[![:space:]]}"}"
+
+            # Skip empty lines
+            if [[ -n "$key" && -n "$value" ]]; then
+              echo "$key=$value"
+              echo "$key=$value" >> $GITHUB_ENV
+            fi
           done < build.config
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
